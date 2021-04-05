@@ -1,16 +1,21 @@
+import { QuerySnapshot } from '@google-cloud/firestore';
 import { firestore } from '../index';
 import { CreditCardDocument, firestoreConverter } from '../models/CreditCard';
 
 const DB_COLLECTION = 'cards';
 
+const getCardsCollection = () =>
+  firestore.collection(DB_COLLECTION).withConverter(firestoreConverter);
+
+const mapSnapshot = (snapshot: QuerySnapshot<CreditCardDocument>) => {
+  return snapshot.docs.map((doc) => doc.data());
+};
+
 export const getAsync = async (): Promise<CreditCardDocument[]> => {
   try {
-    const creditCardsCollection = firestore
-      .collection(DB_COLLECTION)
-      .withConverter(firestoreConverter)
-      .get();
+    const snapshot = await getCardsCollection().get();
 
-    const cards = (await creditCardsCollection).docs.map((doc) => doc.data());
+    const cards = mapSnapshot(snapshot);
 
     return cards;
   } catch (err) {
@@ -18,9 +23,17 @@ export const getAsync = async (): Promise<CreditCardDocument[]> => {
   }
 };
 
-// export const getByIdAsync = async (id: string): Promise<CreditCardDocument> => {
-//   return await
-// };
+export const getByIdAsync = async (id: string): Promise<CreditCardDocument> => {
+  try {
+    const snapshot = await getCardsCollection().doc(id).get();
+
+    const card = snapshot.data();
+
+    return card;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 // export const deleteAllAsync = async (userId: string): Promise<number> => {
 //   try {
@@ -43,8 +56,6 @@ const createCreditCardAsync = async (
     .collection(DB_COLLECTION)
     .withConverter(firestoreConverter)
     .add(creditCard);
-
-  console.log(`new card created with id ${newCreditCard.id}`);
 
   return newCreditCard.id;
 };

@@ -3,7 +3,7 @@ import { CreditCardDocument } from '../models/CreditCard';
 // import ApolloContext from '../../interfaces/apollo-context';
 import {
   getAsync,
-  //   getByIdAsync,
+  getByIdAsync,
   upsertAsync,
   //   deleteAsync,
 } from '../repositories/credit-card';
@@ -18,14 +18,14 @@ export const resolvers: IResolvers = {
 
       return creditCards;
     },
-    // creditCard: async (
-    //   root: void,
-    //   args: { id: string },
-    //   ctx: ApolloContext
-    // ): Promise<CreditCardDocument> => {
-    //   const creditCard = await getByIdAsync(args.id);
-    //   return creditCard;
-    // },
+    creditCard: async (
+      root: void,
+      args: { id: string }
+    ): Promise<CreditCardDocument> => {
+      const creditCard = await getByIdAsync(args.id);
+
+      return creditCard;
+    },
   },
   Mutation: {
     upsertCreditCard: async (
