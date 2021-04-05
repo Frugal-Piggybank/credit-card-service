@@ -33,8 +33,6 @@ export const firestoreConverter: FirestoreDataConverter<CreditCardDocument> = {
   fromFirestore: (snapshot: QueryDocumentSnapshot<DocumentData>) => {
     const data = snapshot.data();
 
-    console.log(`DATA: `, data);
-
     return {
       id: snapshot.id,
       name: data.name,
@@ -44,7 +42,7 @@ export const firestoreConverter: FirestoreDataConverter<CreditCardDocument> = {
       annualFee: data.annualFee,
       minimumSpend: data.minimumSpend,
       signUpBonus: data.signUpBonus,
-      startDate: data.startDate,
+      startDate: data.startDate?.toDate(),
       categories: data.categories,
       hasForeignTransactionFee: data.hasForeignTransactionFee,
     } as CreditCardDocument;
