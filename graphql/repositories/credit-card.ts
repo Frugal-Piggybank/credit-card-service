@@ -18,8 +18,8 @@ export const getAsync = async (): Promise<CreditCardDocument[]> => {
     const cards = mapSnapshot(snapshot);
 
     return cards;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -30,8 +30,8 @@ export const getByIdAsync = async (id: string): Promise<CreditCardDocument> => {
     const card = snapshot.data();
 
     return card;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -40,24 +40,49 @@ export const getByIdAsync = async (id: string): Promise<CreditCardDocument> => {
 //     // const result = await CreditCard.deleteMany({ userId }).exec();
 
 //     return 204;
-//   } catch (err) {
-//     console.error(`Could not delete line items for user ${userId}. `, err);
+//   } catch (error) {
+//     console.error(`Could not delete line items for user ${userId}. `, error);
 //   }
 // };
 
+export const deleteAsync = async (id: string): Promise<void> => {
+  try {
+    // await CreditCard.findOneAndDelete({ id, userId }).exec();
+    const snapshot = getCardsCollection().doc(id);
+
+    await snapshot.delete();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const updateCreditCardAsync = async (
   creditCard: CreditCardDocument
-): Promise<string> => 'Implement Update Method';
+): Promise<string> => {
+  try {
+    const snapshot = getCardsCollection().doc(creditCard.id);
+
+    await snapshot.update(creditCard);
+
+    return 'Succesfully updated';
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const createCreditCardAsync = async (
   creditCard: CreditCardDocument
 ): Promise<string> => {
-  const newCreditCard = await firestore
-    .collection(DB_COLLECTION)
-    .withConverter(firestoreConverter)
-    .add(creditCard);
+  try {
+    const newCreditCard = await firestore
+      .collection(DB_COLLECTION)
+      .withConverter(firestoreConverter)
+      .add(creditCard);
 
-  return newCreditCard.id;
+    return newCreditCard.id;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const upsertAsync = async (
@@ -66,13 +91,3 @@ export const upsertAsync = async (
   creditCard.id
     ? updateCreditCardAsync(creditCard)
     : createCreditCardAsync(creditCard);
-
-// export const deleteAsync = async (id: string): Promise<number> => {
-//   try {
-//     // await CreditCard.findOneAndDelete({ id, userId }).exec();
-
-//     return 204;
-//   } catch (err) {
-//     console.error(`Could not delete line item ${id}. `, err);
-//   }
-// };

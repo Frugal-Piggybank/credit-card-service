@@ -1,11 +1,10 @@
 import { IResolvers } from 'apollo-server-azure-functions';
 import { CreditCardDocument } from '../models/CreditCard';
-// import ApolloContext from '../../interfaces/apollo-context';
 import {
   getAsync,
   getByIdAsync,
   upsertAsync,
-  //   deleteAsync,
+  deleteAsync,
 } from '../repositories/credit-card';
 
 export const resolvers: IResolvers = {
@@ -32,13 +31,11 @@ export const resolvers: IResolvers = {
       root: void,
       args: { creditCard: CreditCardDocument }
     ): Promise<string> => upsertAsync(args.creditCard),
-    // deleteCreditCard: async (
-    //   root: void,
-    //   args: { id: string },
-    //   ctx: ApolloContext
-    // ): Promise<boolean> => {
-    //   const result = await deleteAsync(args.id);
-    //   return result === 204;
-    // },
+    deleteCreditCard: async (
+      root: void,
+      args: { id: string }
+    ): Promise<void> => {
+      await deleteAsync(args.id);
+    },
   },
 };
