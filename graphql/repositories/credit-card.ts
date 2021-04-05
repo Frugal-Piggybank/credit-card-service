@@ -3,15 +3,20 @@ import { CreditCardDocument, firestoreConverter } from '../models/CreditCard';
 
 const DB_COLLECTION = 'cards';
 
-// export const getAsync = async (): Promise<CreditCardDocument[]> => {
-//   try {
-//     const creditCards = firestore
+export const getAsync = async (): Promise<CreditCardDocument[]> => {
+  try {
+    const creditCardsCollection = firestore
+      .collection(DB_COLLECTION)
+      .withConverter(firestoreConverter)
+      .get();
 
-//     return creditCards;
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
+    const cards = (await creditCardsCollection).docs.map((doc) => doc.data());
+
+    return cards;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 // export const getByIdAsync = async (id: string): Promise<CreditCardDocument> => {
 //   return await

@@ -5,7 +5,7 @@ import {
 } from '@google-cloud/firestore';
 
 export interface CreditCardDocument {
-  id: number;
+  id: string;
   name: string;
   issuer: Issuer;
   primaryColor: string;
@@ -33,8 +33,10 @@ export const firestoreConverter: FirestoreDataConverter<CreditCardDocument> = {
   fromFirestore: (snapshot: QueryDocumentSnapshot<DocumentData>) => {
     const data = snapshot.data();
 
+    console.log(`DATA: `, data);
+
     return {
-      id: data.id,
+      id: snapshot.id,
       name: data.name,
       issuer: data.issuer,
       primaryColor: data.primaryColor,

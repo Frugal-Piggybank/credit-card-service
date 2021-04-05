@@ -2,11 +2,11 @@ import { gql } from 'apollo-server-azure-functions';
 
 export const typeDef = gql`
   type CreditCard {
-    _id: ID!
+    id: ID!
     name: String!
   }
   input UpsertCreditCardInput {
-    _id: ID
+    id: ID
     name: String!
   }
   extend type Mutation {
