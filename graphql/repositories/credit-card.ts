@@ -1,8 +1,8 @@
-import { QuerySnapshot } from '@google-cloud/firestore';
-import { firestore } from '../index';
-import { CreditCardDocument, firestoreConverter } from '../models/CreditCard';
+import { QuerySnapshot } from "@google-cloud/firestore";
+import { firestore } from "../index";
+import { CreditCardDocument, firestoreConverter } from "../models/CreditCard";
 
-const DB_COLLECTION = 'cards';
+const DB_COLLECTION = "cards";
 
 const getCardsCollection = () =>
   firestore.collection(DB_COLLECTION).withConverter(firestoreConverter);
@@ -35,19 +35,8 @@ export const getByIdAsync = async (id: string): Promise<CreditCardDocument> => {
   }
 };
 
-// export const deleteAllAsync = async (userId: string): Promise<number> => {
-//   try {
-//     // const result = await CreditCard.deleteMany({ userId }).exec();
-
-//     return 204;
-//   } catch (error) {
-//     console.error(`Could not delete line items for user ${userId}. `, error);
-//   }
-// };
-
 export const deleteAsync = async (id: string): Promise<void> => {
   try {
-    // await CreditCard.findOneAndDelete({ id, userId }).exec();
     const snapshot = getCardsCollection().doc(id);
 
     await snapshot.delete();
@@ -64,7 +53,7 @@ const updateCreditCardAsync = async (
 
     await snapshot.update(creditCard);
 
-    return 'Succesfully updated';
+    return "Succesfully updated";
   } catch (error) {
     console.error(error);
   }
