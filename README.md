@@ -21,3 +21,10 @@ func host start
 ```
 
 Navigate to http://localhost:7071/graphql to perform GraphQL queries
+
+## Deploy the project
+
+```bash
+# Use the --force flag to force update the Azure Function app to v3
+func azure functionapp publish fp-credit-card-service --force
+```
