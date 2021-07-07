@@ -1,3 +1,4 @@
+import { firestore as Firestore } from "firebase-admin";
 import { QuerySnapshot } from "@google-cloud/firestore";
 import { firestore } from "../index";
 import { CategoryDocument, firestoreConverter } from "../models/Category";
@@ -14,6 +15,22 @@ const mapSnapshot = (snapshot: QuerySnapshot<CategoryDocument>) => {
 export const getAsync = async (): Promise<CategoryDocument[]> => {
   try {
     const snapshot = await getCardCategoriesCollection().get();
+
+    const categories = mapSnapshot(snapshot);
+
+    return categories;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getBulkAsync = async (
+  ids: string[]
+): Promise<CategoryDocument[]> => {
+  try {
+    const snapshot = await getCardCategoriesCollection()
+      .where(Firestore.FieldPath.documentId(), "in", ids)
+      .get();
 
     const categories = mapSnapshot(snapshot);
 

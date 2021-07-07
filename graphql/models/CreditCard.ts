@@ -1,9 +1,27 @@
+import { getByIdAsync } from "./../repositories/category";
+// import { getBulkAsync } from "./../repositories/category";
 import {
   FirestoreDataConverter,
   DocumentData,
   QueryDocumentSnapshot,
 } from "@google-cloud/firestore";
 import { CategoryDocument } from "./Category";
+
+const getCategories = (document: DocumentData) => {
+  let categories = [];
+
+  if (document.categories) {
+    console.error(`Found ${document.categories.length} categories`);
+
+    const categories = document.categories.map(async (cat) => {
+      return await getByIdAsync(cat); //TODO: refactor so we can use the bulk method
+    });
+
+    return Promise.all(categories);
+  }
+
+  return categories;
+};
 
 export interface CreditCardDocument {
   id: string;
@@ -15,7 +33,7 @@ export interface CreditCardDocument {
   minimumSpend: number;
   signUpBonus: number;
   startDate: Date;
-  categories: CategoryDocument[]; // TODO: Should categories be a part of cards or vice versa
+  categories: string[]; // TODO: Should categories be a part of cards or vice versa
   hasForeignTransactionFee: boolean;
   // creditLimit: number; // TODO: relevant for this application?
 }
@@ -44,7 +62,7 @@ export const firestoreConverter: FirestoreDataConverter<CreditCardDocument> = {
       minimumSpend: data.minimumSpend,
       signUpBonus: data.signUpBonus,
       startDate: data.startDate?.toDate(),
-      categories: data.categories ?? [],
+      categories: getCategories(data),
       hasForeignTransactionFee: data.hasForeignTransactionFee,
     } as CreditCardDocument;
   },
