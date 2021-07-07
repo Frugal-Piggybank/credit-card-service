@@ -2,7 +2,7 @@ import { QuerySnapshot } from "@google-cloud/firestore";
 import { firestore } from "../index";
 import { CreditCardDocument, firestoreConverter } from "../models/CreditCard";
 
-const DB_COLLECTION = "cards";
+const DB_COLLECTION = "credit-cards";
 
 const getCardsCollection = () =>
   firestore.collection(DB_COLLECTION).withConverter(firestoreConverter);

@@ -1,5 +1,6 @@
-import { gql } from 'apollo-server-azure-functions';
-import { typeDef as CreditCard } from './credit-card';
+import { gql } from "apollo-server-azure-functions";
+import { typeDef as CreditCard } from "./credit-card";
+import { typeDef as Category } from "./category";
 
 const typeDef = gql`
   scalar Date
@@ -13,4 +14,4 @@ const typeDef = gql`
   }
 `;
 
-export default [typeDef, CreditCard];
+export default [typeDef, CreditCard, Category];

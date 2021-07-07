@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-azure-functions';
+import { gql } from "apollo-server-azure-functions";
 
 export const typeDef = gql`
   type CreditCard {
@@ -11,7 +11,7 @@ export const typeDef = gql`
     minimumSpend: Int
     signUpBonus: Int
     startDate: Date
-    # categories: Int[]
+    categories: [Category]
     hasForeignTransactionFee: Boolean
   }
   input UpsertCreditCardInput {
@@ -24,7 +24,7 @@ export const typeDef = gql`
     minimumSpend: Int
     signUpBonus: Int
     startDate: Date
-    # categories: Int[]
+    categories: [ID]
     hasForeignTransactionFee: Boolean
   }
   extend type Mutation {
